@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Bell Alert</title>
+  <!-- Firebase scripts (compat version for plain HTML) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+</head>
+<body>
+  <section>
+    <h1>Text walkie-talkie</h1>
+    <a href="help.html"><button>How to use?</button></a>
+  </section>
+  <section>
+    <select id="room">
+      <option value="Channel 1">Channel 1</option>
+      <option value="Channel 2">Channel 2</option>
+      <option value="Channel 3">Channel 3</option>
+      <option value="Channel 4">Channel 4</option>
+      <option value="Channel 5">Channel 5</option>
+      <option value="Friend Group">Friend Group (Private) (3 Members)</option>
+      <option value="Dev Channel">Dev Channel (Private) (8 Members) </option>
+      <option value="Dev Family">Dev Family (Private) (4 Members)</option>
+    </select>
+  </section>
+  <section>
+     <input id="name" placeholder="Your name">
+  </section>
+  <section>
+      <input id="message" placeholder="Type a message">
+  </section>
+  <section>
+    <button onclick="connect()">Connect</button>
+    <button onclick="sendBell()" disabled id="sendBtn">Send message.</button>
+    <p>Please connect to a channel first before sending messages.</p>
+  </section>
+  
+  <script>
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyBguqCU6NI9Q3NRMJiA4W4LErU6qt2A9gk",
+      authDomain: "bell-27dbe.firebaseapp.com",
+      databaseURL: "https://bell-27dbe-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "bell-27dbe",
+      storageBucket: "bell-27dbe.firebasestorage.app",
+      messagingSenderId: "519724590988",
+      appId: "1:519724590988:web:109ed77d93560e1b7d18a9"
+    };
+
+   
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let roomRef = null;
+    let myName = "";
+
+  
+    let devgroup = ["Russell", "Clement", "Developer 1"]
+    let secretfriendgroup = ["Jeremiah", "Jero", "Reagan", "Reizo", "Lucas", "Clement", "Evano", "Edmund"]
+    let devfamily = ["Yosephine", "Erwin", "Russell", "Richelle"]
+  
+  
+    function connect() {
+      const room = document.getElementById("room").value;
+      myName = document.getElementById("name").value || "Anonymous";
+      roomRef = db.ref("/rooms" + room)
+      if (room === "Dev Channel") {
+        if (!devgroup.includes(myName)) {
+          alert("You are not an authorized member of this channel.");
+          return;
+        }
+      } else if (room === "Friend Group") {
+        if (!secretfriendgroup.includes(myName)) {
+          alert("You are not an authorized member of this channel.");
+          return;
+        }
+      } else if (room === "Dev Family") {
+        if (!devfamily.includes(myName)) {
+          alert("You are not an authorized member of this channel.");
+          return;
+        }
+      }
+      roomRef.on("child_added", snap => {
+        const bell = snap.val();
+        if (bell.sender !== myName) {
+          alert(bell.sender + " says: " + bell.message);
+        }
+      });
+      document.getElementById("sendBtn").disabled = false;
+      alert("Connected to room: " + room);
+    }
+
+    function sendBell() {
+      const msg = document.getElementById("message").value;
+      const room = document.getElementById("room").value;
+      const bell = { sender: myName, time: Date.now(), message: msg };
+      roomRef.push(bell);
+      alert("Bell successfully sent")
+    }
+  </script>
+</body>
+</html>
