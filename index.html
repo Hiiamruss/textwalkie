@@ -86,12 +86,10 @@
       }
       roomRef.on("child_added", snap => {
         const bell = snap.val();
-        if (bell.sender !== myName) {
-          alert("bell.sender + " says: " + bell.message")
-          const p = document.createElement("p")
-          p.innerText = bell.sender + " says: " + bell.message
-          document.getElementById("history").appendChild(p)
-        }
+        const p = document.createElement("p")
+        const now = new Date();
+        p.innerText = bell.sender + " says: " + bell.message + " (" + now.toLocaleTimeString() + ")";
+        document.getElementById("history").prepend(p)
       });
       document.getElementById("sendBtn").disabled = false;
       alert("Connected to room: " + room);
