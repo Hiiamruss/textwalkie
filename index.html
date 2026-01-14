@@ -35,6 +35,8 @@
     <button onclick="sendBell()" disabled id="sendBtn">Send message.</button>
     <p>Please connect to a channel first before sending messages.</p>
   </section>
+  <section id="history">
+  </section>
   
   <script>
     
@@ -59,7 +61,8 @@
     let devgroup = ["Russell", "Clement", "Developer 1"]
     let secretfriendgroup = ["Jeremiah", "Jero", "Reagan", "Reizo", "Lucas", "Clement", "Evano", "Edmund"]
     let devfamily = ["Yosephine", "Erwin", "Russell", "Richelle"]
-  
+
+    
   
     function connect() {
       const room = document.getElementById("room").value;
@@ -84,7 +87,10 @@
       roomRef.on("child_added", snap => {
         const bell = snap.val();
         if (bell.sender !== myName) {
-          alert(bell.sender + " says: " + bell.message);
+          alert("bell.sender + " says: " + bell.message")
+          const p = document.createElement("p")
+          p.innerText = bell.sender + " says: " + bell.message
+          document.getElementById("history").appendChild(p)
         }
       });
       document.getElementById("sendBtn").disabled = false;
@@ -96,6 +102,7 @@
       const room = document.getElementById("room").value;
       const bell = { sender: myName, time: Date.now(), message: msg };
       roomRef.push(bell);
+      messages.push(bell);
       alert("Bell successfully sent")
     }
   </script>
