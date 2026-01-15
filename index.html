@@ -86,11 +86,26 @@
       }
       roomRef.on("child_added", snap => {
         const bell = snap.val();
+        const message = document.getElementById("message").value;
         const p = document.createElement("p")
         const now = new Date();
-        if (bell.sender)
-        p.innerText = bell.sender + " says: " + bell.message + " (" + now.toLocaleTimeString() + ")";
-        document.getElementById("history").prepend(p)
+        if (message === "") {
+          alert("Failed to send message. No message to send.")
+          return;
+        }
+        if (message === "/cleardata") {
+          let password = prompt("Enter Password") 
+          if (password === "16062012*") {
+           alert("Command ran, cleared data.")
+           roomRef.remove()
+           document.getElementById("message").value=""; 
+          }
+        } else {
+          p.innerText = bell.sender + " says: " + bell.message + " (" + now.toLocaleTimeString() + ")";
+          document.getElementById("history").prepend(p)
+          document.getElementById("message").value=""; 
+        }
+        
       });
       document.getElementById("sendBtn").disabled = false;
       alert("Connected to room: " + room);
