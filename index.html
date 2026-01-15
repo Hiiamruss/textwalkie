@@ -7,6 +7,22 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 </head>
+<style>
+  button {
+    background-color:lightblue;
+    border:none;
+    border-radius:12px;
+    height:30px;
+  }
+  
+  body {
+    font-family:"Open Sans";
+  }
+  
+  section {
+    padding:3px;
+  }
+</style>
 <body>
   <section>
     <h1>Text walkie-talkie</h1>
@@ -99,6 +115,9 @@
            alert("Command ran, cleared data.")
            roomRef.remove()
            document.getElementById("message").value=""; 
+          } else {
+            alert("You are unauthorized to do such thing.")
+            document.getElementById("message").value="";
           }
         } else {
           p.innerText = bell.sender + " says: " + bell.message + " (" + now.toLocaleTimeString() + ")";
