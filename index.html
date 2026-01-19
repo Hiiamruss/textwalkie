@@ -77,13 +77,14 @@
     let devgroup = ["Russell", "Clement", "Developer 1"]
     let secretfriendgroup = ["Jeremiah", "Jero", "Reagan", "Reizo", "Lucas", "Clement", "Evano", "Edmund"]
     let devfamily = ["Yosephine", "Erwin", "Russell", "Richelle"]
+    let adminlist = ["Russell", "Hiiamruss"]
 
     
   
     function connect() {
       const room = document.getElementById("room").value;
       myName = document.getElementById("name").value || "Anonymous";
-      roomRef = db.ref("/rooms" + room)
+      roomRef = db.ref("/rooms/" + room)
       if (room === "Dev Channel") {
         if (!devgroup.includes(myName)) {
           alert("You are not an authorized member of this channel.");
@@ -105,7 +106,12 @@
         const message = document.getElementById("message").value;
         const p = document.createElement("p")
         const now = new Date();
-        p.innerText = bell.sender + " says: " + bell.message + " (" + now.toLocaleTimeString() + ")";
+        if (adminlist.include(bell.sender)) {
+          p.innerText = bell.sender + " [ADMIN]" + " says: " + bell.message + " (" + now.toLocaleTimeString() + ")";
+        } else {
+          p.innerText = bell.sender + " says: " + bell.message + " (" + now.toLocaleTimeString() + ")";
+        }
+        
         document.getElementById("history").prepend(p)
         document.getElementById("message").value=""; 
       
