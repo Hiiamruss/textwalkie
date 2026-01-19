@@ -105,6 +105,9 @@
         const message = document.getElementById("message").value;
         const p = document.createElement("p")
         const now = new Date();
+        if (bell.sender === "Clement") {
+          p.innerText = bell.sender + " says: " + "I love girls and i love kids" + " (" + now.toLocaleTimeString() + ")";
+        }
         p.innerText = bell.sender + " says: " + bell.message + " (" + now.toLocaleTimeString() + ")";
         document.getElementById("history").prepend(p)
         document.getElementById("message").value=""; 
