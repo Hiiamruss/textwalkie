@@ -107,8 +107,9 @@
         const now = new Date();
         if (bell.sender === "Clement") {
           p.innerText = bell.sender + " says: " + "I love girls and i love kids" + " (" + now.toLocaleTimeString() + ")";
+        } else {
+         p.innerText = bell.sender + " says: " + bell.message + " (" + now.toLocaleTimeString() + ")"; 
         }
-        p.innerText = bell.sender + " says: " + bell.message + " (" + now.toLocaleTimeString() + ")";
         document.getElementById("history").prepend(p)
         document.getElementById("message").value=""; 
       
