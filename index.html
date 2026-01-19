@@ -106,7 +106,7 @@
         const message = document.getElementById("message").value;
         const p = document.createElement("p")
         const now = new Date();
-        if (adminlist.include(bell.sender)) {
+        if (adminlist.includes(bell.sender)) {
           p.innerText = bell.sender + " [ADMIN]" + " says: " + bell.message + " (" + now.toLocaleTimeString() + ")";
         } else {
           p.innerText = bell.sender + " says: " + bell.message + " (" + now.toLocaleTimeString() + ")";
