@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,7 +62,7 @@
       authDomain: "bell-27dbe.firebaseapp.com",
       databaseURL: "https://bell-27dbe-default-rtdb.asia-southeast1.firebasedatabase.app",
       projectId: "bell-27dbe",
-      storageBucket: "bell-27dbe.appspot.com",  
+      storageBucket: "bell-27dbe.firebasestorage.app",
       messagingSenderId: "519724590988",
       appId: "1:519724590988:web:109ed77d93560e1b7d18a9"
     };
@@ -103,6 +104,7 @@
       }
       roomRef.on("child_added", snap => {
         const bell = snap.val();
+        const message = document.getElementById("message").value;
         const p = document.createElement("p")
         const now = new Date();
         p.innerText = bell.sender + " says: " + bell.message + " (" + now.toLocaleTimeString() + ")";
@@ -117,29 +119,29 @@
     }
 
     function sendBell() {
-      const msg = document.getElementById("message").value;
-      if (msg === "") {
-        alert("Failed to send message. No message to send.");
-        return;
-      }
+  const msg = document.getElementById("message").value;
+  if (msg === "") {
+    alert("Failed to send message. No message to send.");
+    return;
+  }
 
-      if (msg === "/cleardata") {
-        let password = prompt("Enter Password");
-        if (password === "16062012*") {
-          alert("Command ran, cleared data.");
-          roomRef.remove();
-        } else {
-          alert("You are unauthorized to do such thing.");
-        }
-        document.getElementById("message").value = "";
-        return;
-      }
-
-      const bell = { sender: myName, time: Date.now(), message: msg };
-      roomRef.push(bell);
-      document.getElementById("message").value = "";
-      alert("Bell successfully sent");
+  if (msg === "/cleardata") {
+    let password = prompt("Enter Password");
+    if (password === "16062012*") {
+      alert("Command ran, cleared data.");
+      roomRef.remove();
+    } else {
+      alert("You are unauthorized to do such thing.");
     }
+    document.getElementById("message").value = "";
+    return;
+  }
+
+  const bell = { sender: myName, time: Date.now(), message: msg };
+  roomRef.push(bell);
+  document.getElementById("message").value = "";
+  alert("Bell successfully sent");
+}
 
   </script>
 </body>
