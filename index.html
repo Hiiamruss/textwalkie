@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -106,11 +107,7 @@
         const message = document.getElementById("message").value;
         const p = document.createElement("p")
         const now = new Date();
-        if (adminlist.includes(bell.sender)) {
-          p.innerText = bell.sender + " [ADMIN]" + " says: " + bell.message + " (" + now.toLocaleTimeString() + ")";
-        } else {
-          p.innerText = bell.sender + " says: " + bell.message + " (" + now.toLocaleTimeString() + ")";
-        }
+        p.innerText = bell.sender + " says: " + bell.message + " (" + now.toLocaleTimeString() + ")";
         
         document.getElementById("history").prepend(p)
         document.getElementById("message").value=""; 
