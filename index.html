@@ -84,7 +84,7 @@
   
     function connect() {
       const room = document.getElementById("room").value;
-      myName = document.getElementById("name").value || "Anonymous";
+      myName = document.getElementById("name").value || "Secret Person (Anonymous)";
       roomRef = db.ref("/rooms/" + room)
       if (room === "Dev Channel") {
         if (!devgroup.includes(myName)) {
