@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script> 
+<style>
+    body {
+        font-family: "Poppins", sans-serif;
+    }
+
+    .card {
+        width:500px;
+        height:300px;
+        border-radius:15px;
+        background-color:black;
+        color:white;
+        padding:10px;
+    }
+
+    button {
+        width:250px;
+        height:35px;
+        border-radius: 15px;
+        margin-top:10px;
+        border:none;
+        cursor:pointer;
+    }
+
+    input {
+        width:250px;
+        height:35px;
+        border-radius: 15px;
+        margin-top:10px;
+        border:black 1px solid;
+        cursor:pointer;
+    }
+</style>
+<html>
+    <head>
+        <title>Chat</title>
+    </head>
+    <body>
+        <center>
+            <h1>NeoChat</h1>
+            <b id="code">Room Code: </b>
+
+            <section>
+            <input id="message" type="text" placeholder="Enter Message">
+            </section>
+
+            <section>
+                <button onclick="SendMessage()">Send Message</button>
+                <button style="background-color: red;" onclick="window.location.href='index.html'">Disconnect</button>
+            </section>
+
+            <section id="messages">
+
+            </section>
+        </center>
+    </body>
+</html>
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBguqCU6NI9Q3NRMJiA4W4LErU6qt2A9gk",
+        authDomain: "bell-27dbe.firebaseapp.com",
+        databaseURL: "https://bell-27dbe-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "bell-27dbe",
+        storageBucket: "bell-27dbe.firebasestorage.app",
+        messagingSenderId: "519724590988",
+        appId: "1:519724590988:web:109ed77d93560e1b7d18a9"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database(); 
+    let code = localStorage.getItem("code") || Error("nocode");
+    let name = localStorage.getItem("name") || "NeoGuy";
+    document.getElementById("code").innerText = "Code: " + code;  
+    const ref = db.ref("Rooms/" + code)
+
+    ref.on("child_added", snap => {
+        const post = snap.val();
+        const p = document.createElement("p");
+        p.innerText = post.name + " - " + post.message;
+        document.getElementById("messages").prepend(p);
+    });
+
+    function SendMessage() {
+        const message = document.getElementById("message").value;
+        const post = {name: name, message: message};
+        ref.push(post);
+        document.getElementById("message").value = "";
+    }
+
+    function Error(e) {
+        if (e == "nocode") {
+            alert("It appears there is something wrong with the code you just entered. Will bring you back to the main page. Please do not go to this page without connecting first in the beginning. ");
+            window.location.href="index.html";
+        } 
+    }
+
+</script>

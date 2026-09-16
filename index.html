@@ -1,201 +1,73 @@
-<!DOCTYPE html> 
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script> 
+<!DOCTYPE html>
 <style>
-    /* ====================
-   Basic page style
-   ==================== */
-body {
-    font-family: Arial, sans-serif;  /* easy font */
-    background: #f0f0f0;             /* light gray background */
-    text-align: center;     /* center everything */
-    padding: 20px;
-}
+    body {
+        font-family: "Poppins", sans-serif;
+    }
 
-/* ====================
-   Boxes / sections
-   ==================== */
-section {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;  /* round corners */
-    margin-bottom: 20px;
-    margin:auto;          
-    width: 350px;
-}
+    .card {
+        width:500px;
+        height:350px;
+        border-radius:15px;
+        background-color:black;
+        color:white;
+        padding:10px;
+    }
 
-/* ====================
-   Inputs
-   ==================== */
-input {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border: 1px solid #ccc;  /* simple border */
-    border-radius: 12px;
-}
+    button {
+        width:250px;
+        height:35px;
+        border-radius: 15px;
+        margin-top:10px;
+        border:none;
+        cursor:pointer;
+    }
 
-/* ====================
-   Buttons
-   ==================== */
-button {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    background-color:grey;
-    color: white;
-}
-
-#jcb { background: darkslategrey; }
-#dcb { background: red; }
-#smb { background: blue; }
-
-/* ====================
-   Messages
-   ==================== */
-#messages {
-    overflow-y: auto;
-    margin-top: 10px;
-}
-
-#messages div {
-    background: #cce7ff;   /* simple light blue bubble */
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-}
+    input {
+        width:250px;
+        height:35px;
+        border-radius: 15px;
+        margin-top:10px;
+        border:black 1px solid;
+        cursor:pointer;
+    }
 </style>
 <html>
     <head>
-        <title>NeoChat</title>
+        <title>Neochat</title>
     </head>
     <body>
-        <section>
-            <h1>NeoChat</h1>
-            <input type="number" placeholder="Enter Room Code" id="roomcode">
-            <button id="jcb" enabled onclick="Connect()">Join Chat</button>
-            <button id="dcb" disabled onclick="Disconnect()">Disconnect</button>
-            <h3>Or...</h3>
-            <button onclick="CreateRoom()">Create A Room</button>
-            <b id="code">Code Not Generated</b>
-        </section>
-        
-
-        <input type="text" placeholder="Enter Name" id="name">
-        <input type="text" placeholder="Enter Message" id="message">
-        <button id="smb" disabled onclick="SendBell()">Send Message</button>
-        <section id="messages">
-
-        </section>
+        <center>
+            <section class="card">
+                <h1>NeoChat 💬</h1>
+                <input type="text" placeholder="Enter Room Code" id="roomcode">
+                <input type="text" placeholder="Enter your Name" id="name">
+                <section>
+                    <button style="background-color:coral;" onclick="JoinChat()">Join Chatroom</button>
+                    <p>Or</p>
+                    <button onclick="CreateRoom()">Generate Chat 🔧</button>
+                </section>
+            </section>
+            <h1>Neo Chat Updates</h1>
+            <b>New UI Update!</b>
+            <p>Changed the UI to a more minimalist and good looking UI. </p>
+        </center>
     </body>
 </html>
 <script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyBguqCU6NI9Q3NRMJiA4W4LErU6qt2A9gk",
-        authDomain: "bell-27dbe.firebaseapp.com",
-        databaseURL: "https://bell-27dbe-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "bell-27dbe",
-        storageBucket: "bell-27dbe.firebasestorage.app",
-        messagingSenderId: "519724590988",
-        appId: "1:519724590988:web:109ed77d93560e1b7d18a9"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database(); 
-
-    let roomRef = null;
+    function JoinChat() {
+        localStorage.clear();
+        localStorage.setItem("code", document.getElementById("roomcode").value);
+        localStorage.setItem("name", document.getElementById("name").value);
+        alert("Please click the 'ok' button. Right NOW!!");
+        window.location.href="chat.html";
+    }
 
     function CreateRoom() {
         const min = 100_000_000;  // 100 million
         const max = 999_999_999;  // 999,999,999
         code = Math.floor(Math.random() * (max - min + 1)) + min;
 
-        document.getElementById("code").innerText = code
+        document.getElementById("roomcode").value = code
     }
-
-    function Connect() {
-        const roomcode = document.getElementById("roomcode").value;
-        if (roomcode < 100000000) {
-            alert("Invalid room code. Room code must be at least 9 digits.")
-            return;
-        }
-        roomRef = db.ref("/Servers/Asia/" + roomcode)
-
-        alert("Successfully Joined Room " + roomcode + "!");
-
-        
-        roomRef.on("child_added", snap => {
-            const bell = snap.val()
-            const name = bell.name
-            const message = bell.message
-
-            
-            const n = document.createElement("h3");
-            const m = document.createElement("p");
-            const div = document.createElement("div");
-
-            n.innerText = name
-            m.innerText = message
-
-            if (name === "System" || name === "Admin" || name === "admin" || name === "system" || name === "sudo" || name === "Sudo") {
-                n.innerText=""
-                m.style.color="red"
-            }
-
-         
-            
-            div.appendChild(n);
-            div.appendChild(m);
-            document.getElementById("messages").prepend(div);
-        });
-        
-        document.getElementById("smb").disabled = false
-        document.getElementById("jcb").disabled = true
-        document.getElementById("dcb").disabled = false
-    }
-
-    function Disconnect() {
-        const c = confirm("Are you sure you want to disconnect from this chat? You can reconnect at anytime.")
-        if (!c) {
-            alert("Operation Cancelled.")
-            return;
-        }
-        location.reload()
-        document.getElementById("dcb").disabled = true;
-        document.getElementById("smb").disabled = true;
-        document.getElementById("jcb").disabled = false
-    }
-
-    function SendBell() {
-        const name = document.getElementById("name").value;
-        const message = document.getElementById("message").value;
-
-
-        if (name === "System" || name === "Admin" || name === "admin" || name === "system" || name === "sudo" || name === "Sudo") {
-            let p = prompt("Please enter admin password.") 
-            if (p === "123neochatadmin123") {
-                alert("Successfully logged in as admin.")
-            } else {
-                alert("Unauthorized User.")
-                return;
-            }
-        }
-
-        if (name.trim() === "") {
-            alert("Please enter sender name.")
-            return;
-        }
-
-        const post = {name: name, message: message}
-    
-        document.getElementById("message").value = ""
-
-        roomRef.push(post)
-        alert("Successfully sent message.")
-    }
-
-    
 </script>
+
