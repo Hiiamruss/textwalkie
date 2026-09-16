@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script> 
+<style>
+    body {
+        font-family: "Poppins", sans-serif;
+        background-color:aqua;
+    }
+
+    .card {
+        width:500px;
+        height:300px;
+        border-radius:15px;
+        background-color:black;
+        color:white;
+        padding:10px;
+    }
+
+    button {
+        width:250px;
+        height:35px;
+        border-radius: 15px;
+        margin-top:10px;
+        border:none;
+        cursor:pointer;
+    }
+
+    input {
+        width:250px;
+        height:35px;
+        border-radius: 15px;
+        margin-top:10px;
+        border:black 1px solid;
+        cursor:pointer;
+    }
+
+    div {
+        width:400px;
+        height:200px;
+        border-radius:15px;
+        background-color:coral;
+        padding:10px;
+        margin-top:20px;
+    }
+
+    textarea {
+        width:250px;
+        height:100px;
+        border-radius: 15px;
+        margin-top:10px;
+        border:black 1px solid;
+        cursor:pointer;
+    }
+
+    select {
+        width:250px;
+        height:35px;
+        border-radius: 15px;
+        margin-top:10px;
+        border:black 1px solid;
+        cursor:pointer;
+    }
+</style>
+<html>
+    <head>
+        <title>Chat</title>
+    </head>
+    <body>
+        <center>
+            <h1>NeoChat</h1>
+            <b id="code">Room Code: Community Request Wizard (requestcommunity.neohub.cc)</b>
+            <p>Welcome to NeoChat Community Creation Wizard! This is a place where you can share your ideas and create a new community. </p>
+            <p>A community gives you a special code that allows you to type (ex. sarahscommunity.cc) and etc.</p>
+            <section>
+                <input id="name" type="text" placeholder="Enter Name Of Community">
+            </section>
+            <section>
+                <textarea id="description" placeholder="In detail, explain what your community is all about."></textarea>
+            </section>
+            <section>
+                <b>Enter Community Type:</b>
+                <b>Don't know which to pick?</b>
+                <p>Texting communities are for discussion and sharing ideas in text form. All people can join and chat.</p>
+                <p>Webpage communities allow you to type a special code (like NeoHub.cc) and it will redirect it to a webpage.</p>
+                <select>
+                    <option value="Texting Community">Texting Community</option>
+                    <option value="Webpage Community">Webpage Community</option>
+                </select>
+            </section>
+            <section>
+                <input type="text" placeholder="Enter your emailaddress" id="email">
+            </section>
+            <section>
+                <button onclick="SendRequest()">Send Request!</button>
+                <button style="background-color: red;" onclick="window.location.href='index.html'">Leave The Hub</button>
+            </section>
+
+            <section id="messages">
+
+            </section>
+        </center>
+    </body>
+</html>
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBguqCU6NI9Q3NRMJiA4W4LErU6qt2A9gk",
+        authDomain: "bell-27dbe.firebaseapp.com",
+        databaseURL: "https://bell-27dbe-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "bell-27dbe",
+        storageBucket: "bell-27dbe.firebasestorage.app",
+        messagingSenderId: "519724590988",
+        appId: "1:519724590988:web:109ed77d93560e1b7d18a9"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    ref = db.ref("CommunityRequests"); 
+
+    function SendRequest() {
+        const name = document.getElementById("name").value;
+        const description = document.getElementById("description").value;
+        const type = document.querySelector("select").value;
+        const email = document.getElementById("email").value;
+
+        if (name == "" || description == "" || email == "") {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        ref.push({
+            name: name, description: description, type: type, email: email
+        });
+
+        alert("Request sent! Please wait for approval.");
+    }
+</script>
