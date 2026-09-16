@@ -36,7 +36,7 @@
 
     div {
         width:400px;
-        height:100px;
+        height:200px;
         border-radius:15px;
         background-color:coral;
         padding:10px;
@@ -51,14 +51,15 @@
         <center>
             <h1>NeoChat</h1>
             <b id="code">Room Code: NeoChat</b>
-
+            <p>Welcome to NeoHub! This is a place where you can see updates, logs etc! </p>
+            <p>Want a community of your own? Register one right now by typing "/requestcommunity"</p>
             <section>
             <input id="message" type="text" placeholder="Enter Message">
             </section>
 
             <section>
-                <button onclick="SendMessage()">Send Message</button>
-                <button style="background-color: red;" onclick="window.location.href='index.html'">Disconnect</button>
+                <button onclick="SendCommands()">Send Message</button>
+                <button style="background-color: red;" onclick="window.location.href='index.html'">Leave The Hub</button>
             </section>
 
             <section id="messages">
@@ -83,8 +84,6 @@
     let code = localStorage.getItem("code") || Error("nocode");
     let name = localStorage.getItem("name") || "NeoGuy";  
     const ref = db.ref("Rooms/" + code)
-    const passwordref = db.ref("password");
-    let password;
 
     ref.on("child_added", snap => {
         const post = snap.val();
@@ -102,37 +101,79 @@
         document.getElementById("messages").prepend(div);
     });
 
-    passwordref.on("value", snap => {
-        password = snap.val();
-    });
-
     document.getElementById("message").addEventListener("keypress", function(event) {
         if (event.key === "Enter") {
-            SendMessage();
+            SendCommands();
         }
     });
 
-    function SendMessage() {
-        if (!document.getElementById("message").value) {
-            alert("You cannot send a message without a message? lol?");
-            return;
-        }
-        if (prompt("Enter Admin Password to Send Message") == password) {
-            const message = document.getElementById("message").value;
-            const post = {name: name, message: message};
-            ref.push(post);
-            document.getElementById("message").value = "";
-        } else {
-            alert("Incorrect Password. Only admins may chat in this room.")
-            return;
-        }
-    }
 
     function Error(e) {
         if (e == "nocode") {
             alert("It appears there is something wrong with the code you just entered. Will bring you back to the main page. Please do not go to this page without connecting first in the beginning. ");
             window.location.href="index.html";
         } 
+    }
+
+    function SendCommands() {
+        if (document.getElementById("message").value == "/help") {
+            const div = document.createElement("div");
+            const b = document.createElement("b");
+            const p1 = document.createElement("p");
+            const p2 = document.createElement("p");
+            const p3 = document.createElement("p");
+
+            b.innerText = "NeoBot";
+            p1.innerText = "In NeoHub, you cannot chat in this sevrer, but you can view latest updates, and better yet, you can put some commands in this community!" ;
+            p2.innerText = "Commands: /help, /communitylist, /requestcommunity";
+            p3.innerText = "If you want to request a community, type /requestcommunity";
+
+            div.appendChild(b);
+            div.appendChild(p1);
+            div.appendChild(p2);
+            div.appendChild(p3);
+
+            document.getElementById("messages").prepend(div);
+        } else if (document.getElementById("message").value == "/communitylist") {
+            const div = document.createElement("div");
+            const b = document.createElement("b");
+            const p1 = document.createElement("p");
+            const p2 = document.createElement("p");
+            const p3 = document.createElement("p");
+
+            b.innerText = "NeoCommunityFetcher";
+            p1.innerText = "Here is a list of NeoChat owned communities that are currently available: "; ;
+            p2.innerText = "neohub.cc, neoai.cc, neomusic.cc";
+            p3.innerText = "Want your own private/public community? Type /requestcommunity to request one!";
+
+            div.appendChild(b);
+            div.appendChild(p1);
+            div.appendChild(p2);
+            div.appendChild(p3);
+
+            document.getElementById("messages").prepend(div);
+        } else if (document.getElementById("message").value == "/requestcommunity") {
+            const div = document.createElement("div");
+            const b = document.createElement("b");
+            const p1 = document.createElement("p");
+            const p2 = document.createElement("p");
+            const p3 = document.createElement("p");
+
+            b.innerText = "NeoChat Community Guide";
+            p1.innerText = "Making a community is fairly easy, however you need to explain what the hub is all about."; ;
+            p2.innerText = "Teleporting you to the Community Request Form! Please fill it out and we will get back to you as soon as possible!";
+            p3.innerText = "We will respond and review the request in 3-5 business days.";
+
+            div.appendChild(b);
+            div.appendChild(p1);
+            div.appendChild(p2);
+            div.appendChild(p3);
+            
+            alert("You are going to be teleported. Please click 'ok' when you are ready.");
+            window.location.href="requestcommunity.html";
+        } else {
+            alert("This command does not exist! Please type /help to see the list of commands!");
+        }
     }
 
 </script>
