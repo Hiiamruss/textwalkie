@@ -4,6 +4,7 @@
 <style>
     body {
         font-family: "Poppins", sans-serif;
+        background-color:aqua;
     }
 
     .card {
@@ -49,7 +50,7 @@
     <body>
         <center>
             <h1>NeoChat</h1>
-            <b id="code">Room Code: </b>
+            <b id="code">Room Code: NeoChat</b>
 
             <section>
             <input id="message" type="text" placeholder="Enter Message">
@@ -80,9 +81,10 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database(); 
     let code = localStorage.getItem("code") || Error("nocode");
-    let name = localStorage.getItem("name") || "NeoGuy";
-    document.getElementById("code").innerText = "Code: " + code;  
+    let name = localStorage.getItem("name") || "NeoGuy";  
     const ref = db.ref("Rooms/" + code)
+    const passwordref = db.ref("password");
+    let password;
 
     ref.on("child_added", snap => {
         const post = snap.val();
@@ -100,15 +102,24 @@
         document.getElementById("messages").prepend(div);
     });
 
+    passwordref.on("value", snap => {
+        password = snap.val();
+    });
+
     function SendMessage() {
         if (!message) {
             alert("You cannot send a message without a message? lol?");
             return;
         }
-        const message = document.getElementById("message").value;
-        const post = {name: name, message: message};
-        ref.push(post);
-        document.getElementById("message").value = "";
+        if (prompt("Enter Admin Password to Send Message") == password) {
+            const message = document.getElementById("message").value;
+            const post = {name: name, message: message};
+            ref.push(post);
+            document.getElementById("message").value = "";
+        } else {
+            alert("Incorrect Password. Only admins may chat in this room.")
+            return;
+        }
     }
 
     function Error(e) {

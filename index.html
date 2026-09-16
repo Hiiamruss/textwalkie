@@ -58,8 +58,7 @@
         localStorage.clear();
         localStorage.setItem("code", document.getElementById("roomcode").value);
         localStorage.setItem("name", document.getElementById("name").value);
-        alert("Please click the 'ok' button. Right NOW!!");
-        window.location.href="chat.html";
+        window.location.href=CheckPublicServer();
     }
 
     function CreateRoom() {
@@ -68,6 +67,15 @@
         code = Math.floor(Math.random() * (max - min + 1)) + min;
 
         document.getElementById("roomcode").value = code
+    }
+
+    function CheckPublicServer() {
+        let code = document.getElementById("roomcode").value;
+        if (code == "neochat.cc") {
+            return "neohub.html";
+        } else {
+            return "chat.html"
+        }
     }
 </script>
 
