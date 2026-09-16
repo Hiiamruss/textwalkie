@@ -106,8 +106,14 @@
         password = snap.val();
     });
 
+    document.getElementById("message").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            SendMessage();
+        }
+    });
+
     function SendMessage() {
-        if (!message) {
+        if (!document.getElementById("message").value) {
             alert("You cannot send a message without a message? lol?");
             return;
         }
