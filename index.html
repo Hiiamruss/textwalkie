@@ -48,9 +48,11 @@
                 </section>
             </section>
             <h1>Neo Chat Updates</h1>
-            <b>New UI Update!</b>
-            <p>Changed the UI to a more minimalist and good looking UI. </p>
-        </center>
+            <b>Hi, neochat isn't only about chatting!</b>
+            <p>Try putting these in the "code" field:</p>
+            <b>neohub.cc - This is a place where you can run commands to do stuff! Also watch for updates!</b>
+            <b>neomusic.neohub.cc - This is a place where you can listen to music that are kinda... quesitonable lol.</b>
+            <b>requestcommunity.neohub.cc - This is a place where you can make your own community.. like neomusic and etc. </b>
     </body>
 </html>
 <script>
@@ -71,8 +73,14 @@
 
     function CheckPublicServer() {
         let code = document.getElementById("roomcode").value;
-        if (code == "neochat.cc") {
+        if (code == "neohub.cc") {
             return "neohub.html";
+        } else if (code == "requestcommunity.neohub.cc") {
+            return "requestcommunity.html";
+        } else if (code == "neomusic.neohub.cc") {
+            return "neomusic.html";
+        } else if (code == "67") {
+            return "roomsixtyseven.html";
         } else {
             return "chat.html"
         }
