@@ -47,6 +47,10 @@
                     <button onclick="CreateRoom()">Generate Chat 🔧</button>
                 </section>
             </section>
+            <h1>Tips For First Timers</h1>
+            <p>NeoChat isn't only about chatting, there are other stuff to check out. Try  going to the neohub by putting "neohub.cc" in the code field.</p>
+            <p>Explore public servers by typing "/communitylist" in Neohub.</p>
+            <a href="help.html"><button style="background-color: beige;">what the frick is neochat ?</button></a>
     </body>
 </html>
 <script>
@@ -72,13 +76,14 @@
             return "neohub.html";
             } else if (code == "requestcommunity.neohub.cc") {
                 return "requestcommunity.html";
-            } else if (code == "neomusic.neohub.cc") {
+            } else if (code == "neomusic.cc") {
                 return "neomusic.html";
             } else if (code == "67") {
                 return "roomsixtyseven.html";
-            } else if (code == "ai.neohub.cc") {
+            } else if (code == "neoai.cc") {
                 return "neochatai.html";
             } else {
+                alert("There doesn't seem to be a public room with code: " + code + " Please double check for typos.");
                 return "index.html"
             }
         } else {

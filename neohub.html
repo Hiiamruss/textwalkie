@@ -59,7 +59,7 @@
             </section>
 
             <section>
-                <button onclick="SendCommands()">Send Message</button>
+                <button onclick="SendCommands()">Send Message (/help) for help</button>
                 <button style="background-color: red;" onclick="window.location.href='index.html'">Leave The Hub</button>
             </section>
 
@@ -70,37 +70,6 @@
     </body>
 </html>
 <script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyBguqCU6NI9Q3NRMJiA4W4LErU6qt2A9gk",
-        authDomain: "bell-27dbe.firebaseapp.com",
-        databaseURL: "https://bell-27dbe-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "bell-27dbe",
-        storageBucket: "bell-27dbe.firebasestorage.app",
-        messagingSenderId: "519724590988",
-        appId: "1:519724590988:web:109ed77d93560e1b7d18a9"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database(); 
-    let code = localStorage.getItem("code") || Error("nocode");
-    let name = localStorage.getItem("name") || "NeoGuy";  
-    const ref = db.ref("Rooms/" + code)
-
-    ref.on("child_added", snap => {
-        const post = snap.val();
-
-        const div = document.createElement("div");
-        const b = document.createElement("b");
-        const p = document.createElement("p");
-
-        b.innerText = post.name;
-        p.innerText = post.message;
-
-        div.appendChild(b);
-        div.appendChild(p);
-
-        document.getElementById("messages").prepend(div);
-    });
 
     document.getElementById("message").addEventListener("keypress", function(event) {
         if (event.key === "Enter") {
@@ -108,13 +77,6 @@
         }
     });
 
-
-    function Error(e) {
-        if (e == "nocode") {
-            alert("It appears there is something wrong with the code you just entered. Will bring you back to the main page. Please do not go to this page without connecting first in the beginning. ");
-            window.location.href="index.html";
-        } 
-    }
 
     function SendCommands() {
         if (document.getElementById("message").value == "/help") {
@@ -144,7 +106,7 @@
 
             b.innerText = "NeoCommunityFetcher";
             p1.innerText = "Here is a list of NeoChat owned communities that are currently available: "; ;
-            p2.innerText = "neohub.cc, neoai.cc, neomusic.cc";
+            p2.innerText = "neohub.cc, neoai.cc, neomusic.neohub.cc, hangout.cc";
             p3.innerText = "Want your own private/public community? Type /requestcommunity to request one!";
 
             div.appendChild(b);
@@ -173,7 +135,23 @@
             alert("You are going to be teleported. Please click 'ok' when you are ready.");
             window.location.href="requestcommunity.html";
         } else {
-            alert("This command does not exist! Please type /help to see the list of commands!");
+            const div = document.createElement("div");
+            const b = document.createElement("b");
+            const p1 = document.createElement("p");
+            const p2 = document.createElement("p");
+            const p3 = document.createElement("p");
+
+            b.innerText = "NeoBot";
+            p1.innerText = "You cannot chat or text in this hub. This message can only be seen by you. "; ;
+            p2.innerText = "If you want to chat, go to hangout.cc for a public chatting forum.";
+            p3.innerText = "Thank you for your understanding. ";
+
+            div.appendChild(b);
+            div.appendChild(p1);
+            div.appendChild(p2);
+            div.appendChild(p3);
+
+            document.getElementById("messages").prepend(div);
         }
     }
 
