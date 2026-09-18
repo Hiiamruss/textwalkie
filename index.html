@@ -67,18 +67,22 @@
 
     function CheckPublicServer() {
         let code = document.getElementById("roomcode").value;
-        if (code == "neohub.cc") {
+        if (code.includes(".cc")) {
+            if (code == "neohub.cc") {
             return "neohub.html";
-        } else if (code == "requestcommunity.neohub.cc") {
-            return "requestcommunity.html";
-        } else if (code == "neomusic.neohub.cc") {
-            return "neomusic.html";
-        } else if (code == "67") {
-            return "roomsixtyseven.html";
-        } else if (code == "ai.neohub.cc") {
-            return "neochatai.html";
+            } else if (code == "requestcommunity.neohub.cc") {
+                return "requestcommunity.html";
+            } else if (code == "neomusic.neohub.cc") {
+                return "neomusic.html";
+            } else if (code == "67") {
+                return "roomsixtyseven.html";
+            } else if (code == "ai.neohub.cc") {
+                return "neochatai.html";
+            } else {
+                return "index.html"
+            }
         } else {
-            return "chat.html"
+            return "chat.html";
         }
     }
 </script>

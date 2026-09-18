@@ -76,8 +76,20 @@
             window.location.href = "index.html";
         } else if (document.getElementById("message").value == "/stopall") {
             window.location.href = "neomusic.html";
-        } else {
+        } else if (document.getElementById("message").value == "/gamble") {
+            playRandomSound();
+        } 
+        else {
             alert("Invalid command. Please try again.");
         }
+    }
+
+    function playRandomSound() {
+    let sounds = document.querySelectorAll("audio");
+
+    let randomNumber = Math.floor(Math.random() * sounds.length);
+
+    sounds[randomNumber].currentTime = 0;
+    sounds[randomNumber].play();
     }
 </script>
