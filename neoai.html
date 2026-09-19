@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script> 
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<style>
+    body {
+        font-family: "Poppins", sans-serif;
+    }
+
+    .card {
+        width:500px;
+        height:300px;
+        border-radius:15px;
+        background-color:black;
+        color:white;
+        padding:10px;
+    }
+
+    button {
+        width:250px;
+        height:35px;
+        border-radius: 15px;
+        margin-top:10px;
+        border:none;
+        cursor:pointer;
+    }
+
+    input {
+        width:250px;
+        height:35px;
+        border-radius: 15px;
+        margin-top:10px;
+        border:black 1px solid;
+        cursor:pointer;
+    }
+
+    div {
+        width:400px;
+        height:100px;
+        border-radius:15px;
+        background-color:coral;
+        padding:10px;
+        margin-top:20px;
+    }
+</style>
+<html>
+    <head>
+        <title>Chat</title>
+    </head>
+    <body>
+        <center>
+            <h1>NeoChat</h1>
+            <b>Room Code: AI Agent</b>
+
+            <section>
+            <input id="message" type="text" placeholder="Enter Message">
+            </section>
+
+            <section>
+                <button onclick="AskAI()">Send Message</button>
+                <button style="background-color: red;" onclick="window.location.href='index.html'">Disconnect</button>
+            </section>
+
+            <section id="messages">
+
+            </section>
+        </center>
+    </body>
+</html>
+<script>
+    function AskAI() {
+        fetch("http://168.110.196.7:8080/api/neochat", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+            },
+            body: JSON.stringify({
+                message: document.getElementById("message").value
+            })
+        }).then(response => response.json())
+        .then(data => {
+            const div = document.createElement("div");
+            const b = document.createElement("b");
+            const p = document.createElement("p");
+
+            b.innerText = "NeoBot";
+            p.innerText = data.reply;
+
+            div.appendChild(b);
+            div.appendChild(p);
+
+            document.getElementById("messages").prepend(div);
+        });
+    }
+</script>
