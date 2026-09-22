@@ -36,7 +36,6 @@
 
     div {
         width:400px;
-        height:100px;
         border-radius:15px;
         background-color:coral;
         padding:10px;
@@ -68,6 +67,12 @@
     </body>
 </html>
 <script>
+    document.getElementById("message").addEventListener("keydown", function(event) {
+        if (event.key == "Enter") {
+            AskAI();
+        }
+    })
+
     function AskAI() {
         fetch("https://available-via-baby-percent.trycloudflare.com/api/chat", {
             method: "POST",
@@ -91,5 +96,6 @@
 
             document.getElementById("messages").prepend(div);
         });
+        document.getElementById("message").value=""
     }
 </script>
